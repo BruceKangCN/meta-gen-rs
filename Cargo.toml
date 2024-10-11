@@ -2,6 +2,7 @@
 name = "rusty-ffmpeg-meta"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 rusty_ffmpeg = "0.16.1"
