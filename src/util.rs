@@ -33,7 +33,11 @@ impl Serializer {
             creator,
             album,
         } = track.to_owned();
-        let location = urlencoding::encode(&location).into_owned();
+        let location = location
+            .split('/')
+            .map(|s| urlencoding::encode(&s).into_owned())
+            .collect::<Vec<String>>()
+            .join("/");
 
         let title = title.unwrap_or_default();
         let title = html_escape::encode_text(&title).into_owned();
