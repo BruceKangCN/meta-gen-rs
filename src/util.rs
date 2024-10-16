@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use serde::Deserialize;
 
 #[derive(Clone, Debug)]
@@ -12,7 +14,7 @@ pub struct Track {
 pub struct SerializationConfig {
     pub indent: String,
     pub indent_level: usize,
-    // TODO: base_dir: String
+    pub base_dir: String,
 }
 
 #[derive(Clone, Debug)]
@@ -33,8 +35,15 @@ impl Serializer {
             creator,
             album,
         } = track.to_owned();
+        let location = match Path::new(&location).strip_prefix(&config.base_dir) {
+            Ok(path) => path,
+            Err(_) => Path::new(&location),
+        };
         let location = location
-            .split('/')
+            .components()
+            .map(|s| s.as_os_str())
+            .map(|s| s.to_os_string())
+            .map(|s| s.into_string().unwrap())
             .map(|s| urlencoding::encode(&s).into_owned())
             .collect::<Vec<String>>()
             .join("/");
