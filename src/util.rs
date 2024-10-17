@@ -10,6 +10,50 @@ pub struct Track {
     pub album: Option<String>,
 }
 
+/// Configurations to control output style.
+///
+/// - indent: controls which string is used to indent tags.
+///
+///       - `indent = "  "`:
+///
+///           ```sh
+///           <track>
+///             <location>...</location>
+///             ...
+///           </track>
+///           ```
+///
+///       `indent = "    "`:
+///
+///           ```sh
+///           <track>
+///               <location>...</location>
+///               ...
+///           </track>
+///           ```
+///
+/// - indent_level: controls how many indent level is added at the start of each
+/// line. for example, when `indent = "  "`:
+///
+///     - `indent_level = 0`:
+///
+///         ```sh
+///         <track>
+///           ...
+///         </track>
+///         ```
+///
+///     - `indent_level = 3`:
+///
+///         ```sh
+///               <track>
+///                 ...
+///               </track>
+///         ```
+/// - base_dir: base directory for music library. locations will try to use
+/// relative path according to it. for example, when `base_dir = "/foo/music"`,
+/// file "/foo/music/bar.flac" will generate `<location>bar.flac</location>`,
+/// while "/baz/blah.flac" will generate `<location>/baz/blah.flac</location>`.
 #[derive(Deserialize, Clone, Debug)]
 pub struct SerializationConfig {
     pub indent: String,
@@ -24,6 +68,8 @@ pub struct Serializer {
 
 impl Serializer {
     /// serialize track information to XSPF track entity
+    ///
+    /// if field is `None`, empty string is used.
     pub fn serialize(self, track: &Track) -> String {
         let config = self.config;
         let indent = config.indent;

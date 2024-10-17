@@ -1,14 +1,16 @@
 pub mod util;
 
-use rusty_ffmpeg::ffi::{
-    av_dict_get, avformat_find_stream_info, avformat_open_input, AVFormatContext,
-};
 use std::{
     ffi::CString,
     ptr::{null, null_mut},
 };
+
+use rusty_ffmpeg::ffi::{
+    av_dict_get, avformat_close_input, avformat_find_stream_info, avformat_open_input, AVFormatContext,
+};
 use util::{Serializer, Track};
 
+/// get `artist`, `title`, `album` from file, returns a `Track` object.
 pub fn generate_info(location: &str, serializer: &Serializer) -> Result<String, String> {
     let mut ctx = null_mut::<AVFormatContext>();
     unsafe {
@@ -19,15 +21,18 @@ pub fn generate_info(location: &str, serializer: &Serializer) -> Result<String, 
             null_mut(),
         );
         if ret < 0 {
+            avformat_close_input(&mut ctx);
             return Err("Cannot open input file".into());
         }
 
         let ret = avformat_find_stream_info(ctx, null_mut());
         if ret < 0 {
+            avformat_close_input(&mut ctx);
             return Err("Cannot find stream information".into());
         }
 
         if (*ctx).metadata.is_null() {
+            avformat_close_input(&mut ctx);
             return Err("No metadata".into());
         }
     };
@@ -36,6 +41,10 @@ pub fn generate_info(location: &str, serializer: &Serializer) -> Result<String, 
     let creator = dict_tag_value(ctx, "artist");
     let title = dict_tag_value(ctx, "title");
     let album = dict_tag_value(ctx, "album");
+
+    unsafe {
+        avformat_close_input(&mut ctx);
+    }
 
     let track = Track {
         location,
@@ -49,6 +58,10 @@ pub fn generate_info(location: &str, serializer: &Serializer) -> Result<String, 
     Ok(info)
 }
 
+/// a wrapper to `rusty_ffmpeg::ffi::av_dict_get`.
+///
+/// call `av_dict_get(ctx->metadata, tag, NULL, NULL)`, returl `Some(value)` if
+/// successfully get the value, or `None` if `NULL` is returned.
 pub fn dict_tag_value(ctx: *const AVFormatContext, tag: &str) -> Option<String> {
     unsafe {
         let tag = av_dict_get(
