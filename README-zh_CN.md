@@ -4,7 +4,7 @@
 
 ## 使用方法
 
-在 `${XDG_CONFIG_HOME}` 目录下（在 *nix 系统通常位于 `${HOME}/.config`，或在 Windows 系统通常位于 `C:\Users\<username>\config`）创建 `rfm.toml` 文件，设置 `indent`, `indent_level`, `base_dir`，例如：
+在 `${XDG_CONFIG_HOME}` 目录下（在 *nix 系统通常位于 `${HOME}/.config`，或在 Windows 系统通常位于 `C:\Users\<username>\AppData\Roaming`）创建 `rfm.toml` 文件，设置 `indent`, `indent_level`, `base_dir`，例如：
 
 ```toml
 indent = "    "
@@ -22,16 +22,12 @@ $ rusty-ffmpeg-meta [OPTIONS] [FILES]...
 
 ## 构建
 
-使用系统包管理器或 vcpkg 安装 `ffmpeg`。
+使用系统软件包管理器 `ffmpeg`。
 
-之后使用 cargo 构建，链接系统 ffmpeg：
-
-```sh
-$ cargo build --release --features rusty_ffmpeg/link_system_ffmpeg
-```
-
-或链接通过 vcpkg 安装的 ffmpeg：
+之后使用 cargo 构建：
 
 ```sh
-$ cargo build --release --features rusty_ffmpeg/link_vcpkg_ffmpeg
+$ cargo build --release
 ```
+
+注意：在 Windows 系统上您可能需要通过 vcpkg 下载 FFmpeg 的动态链接库文件，并将其放置于可执行文件目录下。

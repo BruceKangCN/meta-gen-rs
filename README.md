@@ -6,7 +6,7 @@ A track generator for XSPF music playlists.
 
 ## Usage
 
-create `rfm.toml` in `${XDG_CONFIG_HOME}` directory (usually `${HOME}/.config` on *nix operating systems, or `C:\Users\<username>\config` on Windows systems), set `indent`, `indent_level`, `base_dir`. For example:
+create `rfm.toml` in `${XDG_CONFIG_HOME}` directory (usually `${HOME}/.config` on *nix operating systems, or `C:\Users\<username>\AppData\Roaming` on Windows systems), set `indent`, `indent_level`, `base_dir`. For example:
 
 ```toml
 indent = "    "
@@ -24,16 +24,12 @@ See more help with the `--help` option.
 
 ## Build
 
-Install `ffmpeg` using your system package manager or vcpkg.
+Install `ffmpeg` using your system package manager.
 
 Then build using cargo, link with system ffmpeg:
 
 ```sh
-$ cargo build --release --features rusty_ffmpeg/link_system_ffmpeg
+$ cargo build --release
 ```
 
-or with vcpkg ffmpeg:
-
-```sh
-$ cargo build --release --features rusty_ffmpeg/link_vcpkg_ffmpeg
-```
+Note: You may need to download FFmpeg DLL files using vcpkg on Windows systems, and put them in the same directory of the executable.
