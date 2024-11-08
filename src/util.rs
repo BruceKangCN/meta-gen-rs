@@ -112,8 +112,8 @@ impl Serializer {
 {pre_indent}{indent}<title>{title}</title>
 {pre_indent}{indent}<creator>{creator}</creator>
 {pre_indent}{indent}<album>{album}</album>
-{pre_indent}{indent}<bitrate>{bitrate}</bitrate>
 {pre_indent}{indent}<duration>{duration}</duration>
+{pre_indent}{indent}<meta rel=\"bitrate\">{bitrate}</meta>
 {pre_indent}</track>
 "
         )
