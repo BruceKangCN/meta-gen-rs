@@ -2,7 +2,7 @@
 
 [中文](README-zh_CN.md)
 
-A track generator for XSPF music playlists.
+A track generator for XSPF music playlists, mainly used for Audacious player.
 
 ## Usage
 

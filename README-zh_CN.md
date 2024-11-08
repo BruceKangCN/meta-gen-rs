@@ -1,6 +1,6 @@
 # Rusty FFMPEG Meta
 
-适用于 XSPF 音乐播放列表的 track 生成器。
+适用于 XSPF 音乐播放列表的 track 生成器，主要适用于 Audacious 播放器。
 
 ## 使用方法
 
