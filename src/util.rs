@@ -8,6 +8,8 @@ pub struct Track {
     pub title: Option<String>,
     pub creator: Option<String>,
     pub album: Option<String>,
+    pub bitrate: i64,
+    pub duration: i64,
 }
 
 /// Configurations to control output style.
@@ -80,6 +82,8 @@ impl Serializer {
             title,
             creator,
             album,
+            bitrate,
+            duration,
         } = track.to_owned();
         let location = match Path::new(&location).strip_prefix(&config.base_dir) {
             Ok(path) => path,
@@ -108,6 +112,8 @@ impl Serializer {
 {pre_indent}{indent}<title>{title}</title>
 {pre_indent}{indent}<creator>{creator}</creator>
 {pre_indent}{indent}<album>{album}</album>
+{pre_indent}{indent}<bitrate>{bitrate}</bitrate>
+{pre_indent}{indent}<duration>{duration}</duration>
 {pre_indent}</track>
 "
         )
