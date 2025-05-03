@@ -36,7 +36,7 @@ pub fn generate_info(
         duration,
     };
 
-    let info = format!("{}", serializer.to_owned().serialize(&track));
+    let info = serializer.serialize(&track).to_string();
 
     Ok(info)
 }
